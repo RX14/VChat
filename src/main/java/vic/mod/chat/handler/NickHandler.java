@@ -19,6 +19,7 @@ import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import vic.mod.chat.ChatEntity;
 import vic.mod.chat.Config;
+import vic.mod.chat.Misc;
 import vic.mod.chat.Misc.CommandOverrideAccess;
 import vic.mod.chat.VChat;
 
@@ -29,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -52,6 +54,15 @@ public class NickHandler extends ChatHandlerImpl
 	public void getPlayerName(PlayerEvent.NameFormat event)
 	{
 		if(nickRegistry.containsKey(event.username)) event.displayname = nickRegistry.get(event.username);
+	}
+	
+	@SubscribeEvent
+	public void onPlayerJoined(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event)
+	{
+		if(nickRegistry.containsKey(event.player.getCommandSenderName()) && FMLCommonHandler.instance().getSide().isServer())
+		{
+			Misc.setPlayerListUserName((EntityPlayerMP)event.player, nickRegistry.get(event.player.getCommandSenderName()));
+		}
 	}
 	
 	public void loadNicks()

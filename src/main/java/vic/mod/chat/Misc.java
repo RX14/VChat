@@ -11,12 +11,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.event.HoverEvent.Action;
+import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -147,5 +149,23 @@ public class Misc
 	{	
 		if(deviceMemory != null) return deviceMemory;
 		else return -1;
+	}
+
+	public static void setPlayerListUserName(EntityPlayerMP player, String nick)
+	{
+		final String oldName = player.getCommandSenderName();
+		
+		if(nick == null || oldName.equals(nick)) return;
+		
+        if (nick.length() > 16) {
+            throw new IllegalArgumentException("Player list names can only be a maximum of 16 characters long");
+        }
+        // Change the name on the client side
+        S38PacketPlayerListItem oldpacket = new S38PacketPlayerListItem(oldName, false, 9999);
+        S38PacketPlayerListItem packet = new S38PacketPlayerListItem(nick, true, player.ping);
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        server.getConfigurationManager().sendPacketToAllPlayers(oldpacket);
+        server.getConfigurationManager().sendPacketToAllPlayers(packet);
+        
 	}
 }
