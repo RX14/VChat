@@ -19,10 +19,10 @@ public class VchatClassTransformater implements IClassTransformer {
 	{
 		classToPatch.put("net.minecraft.network.play.server.S38PacketPlayerListItem", "ho");
 		classToPatch.put("net.minecraft.network.play.server.S3CPacketUpdateScore", "ie");
-		classToPatch.put("net.minecraft.network.play.server.S0CPacketSpawnPlayer", "gb");
+		//classToPatch.put("net.minecraft.network.play.server.S0CPacketSpawnPlayer", "gb");
 		handlers.put("net.minecraft.network.play.server.S38PacketPlayerListItem", new PlayerListItemTransformer());
 		handlers.put("net.minecraft.network.play.server.S3CPacketUpdateScore", new UpdateScoreTransformer());
-		handlers.put("net.minecraft.network.play.server.S0CPacketSpawnPlayer", new SpawnPlayerTransformer());
+		//handlers.put("net.minecraft.network.play.server.S0CPacketSpawnPlayer", new SpawnPlayerTransformer());
 	}
 	
 	@Override
