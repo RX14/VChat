@@ -60,9 +60,26 @@ processResources {
 task apiJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.output
     include 'vic/mod/chat/api/**' 
-    appendix = 'API'
+    classifier = 'API'
 }
 
 artifacts {
     archives apiJar
+}
+
+uploadArchives {
+    repositories {
+       mavenDeployer {
+             repository(url: "http://ngnl.ovh:4734/nexus/content/repositories/Vic") {
+             authentication(userName: "admin", password: "mdp")
+}
+       }
+    }
+}
+task writePom << {
+    pom {
+        project {
+            inceptionYear '2014'
+        }
+    }.writeTo("$buildDir/pom.xml")
 }
