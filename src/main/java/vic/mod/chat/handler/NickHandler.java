@@ -14,9 +14,14 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.command.server.CommandMessage;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vic.mod.chat.ChatEntity;
 import vic.mod.chat.Config;
 import vic.mod.chat.Misc.CommandOverrideAccess;
@@ -28,11 +33,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class NickHandler extends ChatHandlerImpl
 {
@@ -163,7 +163,7 @@ public class NickHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public void processCommand(ICommandSender sender, String[] args) 
+		public void processCommand(ICommandSender sender, String[] args) throws CommandException 
 		{
 			if(args.length > 0 && args.length < 3)
 			{			
@@ -202,7 +202,7 @@ public class NickHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public List addTabCompletionOptions(ICommandSender sender, String[] args) 
+		public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) 
 		{
 			return args.length == 1 ? getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames()) : null;
 		}

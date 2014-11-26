@@ -18,6 +18,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -29,10 +33,6 @@ import vic.mod.chat.Misc.CommandOverrideAccess;
 import vic.mod.chat.Track;
 import vic.mod.chat.Track.ParseException;
 import vic.mod.chat.VChat;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
 public class TrackHandler extends ChatHandlerImpl
 {
@@ -142,7 +142,7 @@ public class TrackHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public void processCommand(ICommandSender sender, String[] args) 
+		public void processCommand(ICommandSender sender, String[] args) throws CommandException 
 		{
 			args = Misc.parseArgs(args);
 			if(args.length == 0 || StringUtils.isNumeric(args[0]))

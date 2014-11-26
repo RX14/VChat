@@ -11,6 +11,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,11 +24,6 @@ import vic.mod.chat.Config;
 import vic.mod.chat.Misc;
 import vic.mod.chat.Misc.CommandOverrideAccess;
 import vic.mod.chat.VChat;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 public class AFKHandler extends ChatHandlerImpl
 {
@@ -56,7 +56,7 @@ public class AFKHandler extends ChatHandlerImpl
 			if(event.parameters.length > 0)
 			{
 				ChatEntity entity = new ChatEntity((Object)event.parameters[0]);
-				if(entity.getUsername() != null && isAfk(entity) && !entity.equals(new ChatEntity(event.sender.getCommandSenderName())))
+				if(entity.getUsername() != null && isAfk(entity) && !entity.equals(new ChatEntity(event.sender.getName())))
 				{
 					ChatComponentText comp = new ChatComponentText("The player you tired to message is currently AFK (Reason: " + getReason(entity) + ")");
 					comp.getChatStyle().setColor(EnumChatFormatting.RED);

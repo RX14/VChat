@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModClassLoader;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import vic.mod.chat.api.IChannel;
 import vic.mod.chat.api.bot.IChatBot;
 import vic.mod.chat.handler.ChannelHandler;
 import vic.mod.chat.handler.ChatHandlerImpl;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModClassLoader;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 public class BotLoader extends ChatHandlerImpl
 {

@@ -3,6 +3,13 @@ package vic.mod.chat;
 import java.io.File;
 import java.util.ArrayList;
 
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+
 import org.apache.logging.log4j.Logger;
 
 import vic.mod.chat.handler.AFKHandler;
@@ -12,12 +19,6 @@ import vic.mod.chat.handler.CommonHandler;
 import vic.mod.chat.handler.IChatHandler;
 import vic.mod.chat.handler.NickHandler;
 import vic.mod.chat.handler.TrackHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 @Mod(modid = "vchat", name = "vChat", version = Constants.version, acceptableRemoteVersions = "*")
 public class VChat

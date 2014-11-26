@@ -3,12 +3,15 @@ package vic.mod.chat;
 import java.io.File;
 import java.util.Arrays;
 
+import net.minecraft.command.CommandResultStats.Type;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
@@ -123,18 +126,6 @@ public class BotHandler implements IBotHandler
 	{
 		public String activeCommand;
 		public String[] activeArgs;
-		
-		@Override
-		public String getCommandSenderName() 
-		{
-			return botEntity.getUsername();
-		}
-
-		@Override
-		public IChatComponent func_145748_c_() 
-		{
-			return MinecraftServer.getServer().func_145748_c_();
-		}
 
 		@Override
 		public void addChatMessage(IChatComponent comp)
@@ -147,17 +138,50 @@ public class BotHandler implements IBotHandler
 		{
 			return true;
 		}
-
-		@Override
-		public ChunkCoordinates getPlayerCoordinates() 
-		{
-			return MinecraftServer.getServer().getPlayerCoordinates();
-		}
-
+		
 		@Override
 		public World getEntityWorld() 
 		{
 			return MinecraftServer.getServer().getEntityWorld();
-		}	
+		}
+
+		@Override
+		public String getName() 
+		{
+			return owningBot.getName();
+		}
+
+		@Override
+		public IChatComponent getDisplayName() 
+		{
+			return Misc.getComponent(((BotHandler)owningBot).botEntity);
+		}
+
+		@Override
+		public BlockPos getPosition() 
+		{
+			return null;
+		}
+
+		@Override
+		public Vec3 getPositionVector() 
+		{
+			return null;
+		}
+
+		@Override
+		public Entity getCommandSenderEntity() 
+		{
+			return null;
+		}
+
+		@Override
+		public boolean sendCommandFeedback() 
+		{
+			return false;
+		}
+
+		@Override
+		public void func_174794_a(Type p_174794_1_, int p_174794_2_) {}	
 	}
 }

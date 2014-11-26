@@ -19,6 +19,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,12 +46,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
-
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 public class ChannelHandler extends ChatHandlerImpl
 {
@@ -359,7 +358,7 @@ public class ChannelHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public void processCommand(ICommandSender sender, String[] args) 
+		public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException 
 		{
 			if(args.length < 1) throw new WrongUsageException(getCommandUsage(sender));
 			MinecraftServer.getServer().getCommandManager().executeCommand(sender, "/channel msg local " + StringUtils.join(Arrays.asList(args), " "));
@@ -393,7 +392,7 @@ public class ChannelHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public void processCommand(ICommandSender sender, String[] args) 
+		public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException 
 		{
 			if(args.length < 1) throw new WrongUsageException(getCommandUsage(sender));
 			MinecraftServer.getServer().getCommandManager().executeCommand(sender, "/channel msg global " + StringUtils.join(Arrays.asList(args), " "));
@@ -428,7 +427,7 @@ public class ChannelHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public void processCommand(ICommandSender sender, String[] args) 
+		public void processCommand(ICommandSender sender, String[] args) throws CommandException 
 		{
 			boolean isPlayer = sender instanceof EntityPlayerMP;
 			EntityPlayerMP player = (EntityPlayerMP)(isPlayer ? sender : null);
@@ -496,7 +495,7 @@ public class ChannelHandler extends ChatHandlerImpl
 						if(!channel.isOnChannel(new ChatEntity(player))) throw new ChannelNotJoinedException(channel);		
 						
 						String message = StringUtils.join(Arrays.asList(args).subList(2, args.length).toArray(), " ");
-						ChatComponentTranslation component = new ChatComponentTranslation("chat.type.text", player.func_145748_c_(), message);
+						ChatComponentTranslation component = new ChatComponentTranslation("chat.type.text", player.getName(), message);
 						
 						ChatEntity entity = new ChatEntity(player);
 						IChannel current = getActiveChannel(entity);
