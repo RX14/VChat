@@ -37,7 +37,7 @@ archivesBaseName = "vChat"
 minecraft {
     //Who's idea was this version format?
     version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
-    assetDir = "eclipse/assets"
+    runDir = "eclipse"
 
     replaceIn "Constants.java"
     replace "\${version}", "${config.mod.version}"
@@ -53,12 +53,19 @@ task apiJar(type: Jar, dependsOn: classes) {
     include 'vic/mod/chat/api/**' 
     classifier = 'api'
 }
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
 artifacts {
     archives sourcesJar
     archives apiJar
+    archives deobfJar
 }
