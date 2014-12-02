@@ -1,11 +1,10 @@
 package vic.mod.chat;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,9 +32,10 @@ public abstract class ChatFormatter implements IChatFormatter
 	
 	private void apply(ChatComponentText component, Pattern pattern)
 	{
-		for(int i = 0; i < component.getSiblings().size(); i++)
+		List<ChatComponentText> siblings = component.getSiblings();
+		for(int i = 0; i < siblings.size(); i++)
 		{
-			Object obj = component.getSiblings().get(i);
+			Object obj = siblings.get(i);
 			if(obj instanceof ChatComponentText && ((ChatComponentText)obj).getChatStyle().isEmpty())
 			{
 				ChatComponentText baseComponent = (ChatComponentText)obj;
@@ -46,7 +46,7 @@ public abstract class ChatFormatter implements IChatFormatter
 				
 				if(appliesCustomStyle())
 				{
-					component.getSiblings().remove(i);
+					siblings.remove(i);
 					int index = i;
 					int start = 0;
 					int end = text.length();
@@ -56,14 +56,14 @@ public abstract class ChatFormatter implements IChatFormatter
 						if(find) end = matcher.start();
 						if(start != end) 
 						{
-							component.getSiblings().add(index, new ChatComponentText(text.substring(start, end)));
+							siblings.add(index, new ChatComponentText(text.substring(start, end)));
 							index++;
 						}
 						if(find)
 						{
 							String matched = text.substring(matcher.start(), matcher.end());
 							ChatComponentText comp = getComponentReplacement(matched);
-							component.getSiblings().add(index, comp);
+							siblings.add(index, comp);
 							start = matcher.end();
 							end = text.length();
 							index++;
@@ -73,8 +73,8 @@ public abstract class ChatFormatter implements IChatFormatter
 				}
 				else
 				{
-					component.getSiblings().remove(i);
-					component.getSiblings().add(i, new ChatComponentText(matcher.replaceAll(getReplacement())));
+					siblings.remove(i);
+					siblings.add(i, new ChatComponentText(matcher.replaceAll(getReplacement())));
 				}
 			}
 		}
@@ -147,7 +147,6 @@ public abstract class ChatFormatter implements IChatFormatter
 					URL apiURL = new URL("http://gdata.youtube.com/feeds/api/videos/" + ytid + "?v=2");
 					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 					DocumentBuilder db = dbf.newDocumentBuilder();
-					InputStream in = apiURL.openStream();
 					Document doc = db.parse(apiURL.openStream());
 					String title = doc.getElementsByTagName("title").item(0).getTextContent();
 					String author = ((Element)doc.getElementsByTagName("author").item(0)).getElementsByTagName("name").item(0).getTextContent();
@@ -197,6 +196,7 @@ public abstract class ChatFormatter implements IChatFormatter
 	
 	public static class ChatFormatterSoundCloud extends ChatFormatter
 	{
+		@SuppressWarnings("unchecked")
 		@Override
 		protected ChatComponentText getComponentReplacement(String match) 
 		{	
@@ -205,7 +205,6 @@ public abstract class ChatFormatter implements IChatFormatter
 				HashMap<String, String> move = new GsonBuilder().create().fromJson(new BufferedReader(new InputStreamReader(apiURL.openStream(), "UTF-8")), HashMap.class);
 				URL trackURL = new URL(move.get("location"));
 				SCTrack track = new GsonBuilder().create().fromJson(new BufferedReader(new InputStreamReader(trackURL.openStream(), "UTF-8")), SCTrack.class);
-				System.out.println(track);
 				int seconds = track.getDuration() / 1000;
 				int minutes = seconds / 60;
 				seconds = seconds % 60;
@@ -227,7 +226,7 @@ public abstract class ChatFormatter implements IChatFormatter
 				
 				return c1;
 			} catch(Exception e) {
-				e.printStackTrace();
+				
 			}
 			
 			ChatComponentText text = new ChatComponentText(match);
@@ -276,9 +275,9 @@ public abstract class ChatFormatter implements IChatFormatter
 		private boolean isSelf = false;
 		private ChatEntity player;
 		private boolean replaceNick;
-		private ArrayList<EntityPlayerMP> mentioned;
+		private List<EntityPlayerMP> mentioned;
 		
-		public ChatFormatterUsername(ChatEntity player, ChatEntity receiver, boolean replaceNick, ArrayList<EntityPlayerMP> mentioned)
+		public ChatFormatterUsername(ChatEntity player, ChatEntity receiver, boolean replaceNick, List<EntityPlayerMP> mentioned)
 		{
 			String nickname = player.getNickname();
 			if(replaceNick && nickname == null) canMatch = false;

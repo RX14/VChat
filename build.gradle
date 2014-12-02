@@ -17,7 +17,6 @@ buildscript {
 
 apply plugin: 'forge'
 
-// Read properties file
 ext {
     configFile = file "build.properties"
 
@@ -35,7 +34,6 @@ archivesBaseName = "vChat"
 
 
 minecraft {
-    //Who's idea was this version format?
     version = "${config.minecraft.version}-${config.forge.version}-${config.minecraft.version}"
     runDir = "eclipse"
 

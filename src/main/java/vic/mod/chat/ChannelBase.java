@@ -1,7 +1,7 @@
 package vic.mod.chat;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -9,15 +9,16 @@ import net.minecraft.util.IChatComponent;
 import vic.mod.chat.api.IChannel;
 import vic.mod.chat.handler.ChannelHandler;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public abstract class ChannelBase implements IChannel
 {
-	public ArrayList<ChatEntity> joined = new ArrayList<ChatEntity>();
-	public ArrayList<ChatEntity> muted = new ArrayList<ChatEntity>();
-	public ArrayList<ChatEntity> banned = new ArrayList<ChatEntity>();
+	public List<ChatEntity> joined = Lists.newArrayList();
+	public List<ChatEntity> muted = Lists.newArrayList();
+	public List<ChatEntity> banned = Lists.newArrayList();
 	
 	@Override
 	public IChatComponent formatChat(ChatEntity sender, ChatEntity receiver, IChatComponent message) 

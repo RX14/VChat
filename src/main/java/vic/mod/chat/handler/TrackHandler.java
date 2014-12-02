@@ -1,7 +1,6 @@
 package vic.mod.chat.handler;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,6 +32,8 @@ import vic.mod.chat.Misc.CommandOverrideAccess;
 import vic.mod.chat.Track;
 import vic.mod.chat.Track.ParseException;
 import vic.mod.chat.VChat;
+
+import com.google.common.collect.Lists;
 
 public class TrackHandler extends ChatHandlerImpl
 {
@@ -158,7 +159,7 @@ public class TrackHandler extends ChatHandlerImpl
 				page = page < 0 ? 0 : page;
 				int numPages = tracks.size() / 6 + 1;
 				if(page >= numPages) throw new CommandException("Exceeded the number of pages, " + numPages + ".");
-				List<Track> trackList = new ArrayList(tracks.values()).subList(page * 6, MathHelper.clamp_int(((page + 1) * 6) - 1, 0, tracks.size()));
+				List<Track> trackList = Lists.newArrayList(tracks.values()).subList(page * 6, MathHelper.clamp_int(((page + 1) * 6) - 1, 0, tracks.size()));
 				sender.addChatMessage(new ChatComponentTranslation("Currently loaded tracks (Page %s of %s):", page + 1, numPages));
 				for(int i = 0; i < trackList.size(); i++)
 				{
@@ -196,7 +197,7 @@ public class TrackHandler extends ChatHandlerImpl
 					else 
 					{
 						if(sender instanceof EntityPlayerMP)
-							track.start(new ArrayList(Arrays.asList(sender)));
+							track.start(Arrays.asList((EntityPlayerMP)sender));
 						else throw new CommandException("You *might* just not want to do that. Sorry, the console has no sound output.");
 					}
 				}

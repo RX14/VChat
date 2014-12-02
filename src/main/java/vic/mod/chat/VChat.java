@@ -1,7 +1,7 @@
 package vic.mod.chat;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,7 +20,9 @@ import vic.mod.chat.handler.IChatHandler;
 import vic.mod.chat.handler.NickHandler;
 import vic.mod.chat.handler.TrackHandler;
 
-@Mod(modid = "vchat", name = "vChat", version = Constants.version, acceptableRemoteVersions = "*")
+import com.google.common.collect.Lists;
+
+@Mod(modid = "vchat", name = "vChat", version = Constants.VERSION, acceptableRemoteVersions = "*")
 public class VChat
 {
 	
@@ -36,8 +38,7 @@ public class VChat
 	public static NickHandler nickHandler;
 	public static TrackHandler trackHandler;
 	
-	public static Config config;
-	public static ArrayList<IChatHandler> handlers = new ArrayList<IChatHandler>();
+	public static List<IChatHandler> handlers = Lists.newArrayList();
 	public static Logger logger;
 	
 	@EventHandler
@@ -45,8 +46,7 @@ public class VChat
 	{
 		logger = event.getModLog();
 		
-		config = new Config();
-		config.initialize(event.getSuggestedConfigurationFile());
+		Config.initialize(event.getSuggestedConfigurationFile());
 		
 		File rootDir = event.getModConfigurationDirectory().getParentFile();
 		rootDir.setWritable(true);
@@ -54,12 +54,12 @@ public class VChat
 		channelHandler = new ChannelHandler();
 		botLoader = new BotLoader();
 		
-		if(config.nickEnabled) nickHandler = new NickHandler();
-		if(config.trackEnabled) trackHandler = new TrackHandler();
-		if(config.afkEnabled) 
+		if(Config.nickEnabled) nickHandler = new NickHandler();
+		if(Config.trackEnabled) trackHandler = new TrackHandler();
+		if(Config.afkEnabled) 
 		{
 			afkHandler = new AFKHandler();
-			if(config.autoAfkEnabled) autoAfkHandler = new AutoAFKHandler();
+			if(Config.autoAfkEnabled) autoAfkHandler = new AutoAFKHandler();
 		}
 	}
 	

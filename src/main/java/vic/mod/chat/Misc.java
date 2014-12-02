@@ -5,7 +5,6 @@ import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -26,6 +25,8 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.collect.Lists;
 
 public class Misc 
 {
@@ -64,21 +65,21 @@ public class Misc
 		return modt.split("/n");
 	}
 	
-	public static ArrayList<ChatEntity> getOnlinePlayersAsEntity()
+	public static List<ChatEntity> getOnlinePlayersAsEntity()
 	{
-		ArrayList<ChatEntity> list = new ArrayList<ChatEntity>();
+		List<ChatEntity> list = Lists.newArrayList();
 		for(Object obj : MinecraftServer.getServer().getConfigurationManager().playerEntityList) list.add(new ChatEntity(obj));
 		return list;
 	}
 	
-	public static ArrayList<EntityPlayerMP> getOnlinePlayers()
+	public static List<EntityPlayerMP> getOnlinePlayers()
 	{
-		return (ArrayList<EntityPlayerMP>) MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		return MinecraftServer.getServer().getConfigurationManager().playerEntityList;
 	}
 	
 	public static EntityPlayerMP getPlayer(String player)
 	{
-		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		Iterator<EntityPlayerMP> iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
 		while(iterator.hasNext())
 		{
 			EntityPlayerMP entity = (EntityPlayerMP)iterator.next();
@@ -113,7 +114,7 @@ public class Misc
 	
 	public static String[] parseArgs(String[] args)
 	{
-		List<String> list = new ArrayList<String>();
+		List<String> list = Lists.newArrayList();
 		Matcher m = splitPattern.matcher(StringUtils.join(Arrays.asList(args), " "));
 		while(m.find()) list.add(m.group(1).replaceAll("\"", ""));
 		return list.toArray(new String[list.size()]);

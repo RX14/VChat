@@ -50,6 +50,8 @@ public class Config
 	public static int trackPermissionLevel;
 	public static int trackPermissionLevelSelf;
 	
+	private Config() {}
+	
 	public static void initialize(File file)
 	{
 		Configuration config = new Configuration(file);

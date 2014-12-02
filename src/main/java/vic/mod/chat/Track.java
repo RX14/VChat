@@ -1,6 +1,5 @@
 package vic.mod.chat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,7 +14,7 @@ public class Track
 	private Element[] elements;
 	private int pointer;
 	private int timeout;
-	private ArrayList<EntityPlayerMP> players;
+	private List<EntityPlayerMP> players;
 	public String name;
 	
 	private Track() {}
@@ -153,7 +152,7 @@ public class Track
 		this.pointer = pointer;
 	}
 	
-	public void start(ArrayList players)
+	public void start(List<EntityPlayerMP> players)
 	{
 		pointer = 0;
 		if(players.isEmpty() || elements.length == 0) return;
@@ -202,6 +201,8 @@ public class Track
 	
 	public static class ParseException extends RuntimeException
 	{
+		private static final long serialVersionUID = 8524515844908020799L;
+
 		public ParseException(String cause)
 		{
 			super(cause);

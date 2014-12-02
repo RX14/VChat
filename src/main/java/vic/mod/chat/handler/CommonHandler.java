@@ -3,7 +3,6 @@ package vic.mod.chat.handler;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +42,7 @@ import vic.mod.chat.Misc.CommandOverrideAccess;
 import vic.mod.chat.VChat;
 import vic.mod.chat.api.IChannel;
 
+import com.google.common.collect.Lists;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -182,7 +182,7 @@ public class CommonHandler extends ChatHandlerImpl
 
 		ChatComponentText componentName = Misc.getComponent(entity);
 		
-		ArrayList<EntityPlayerMP> mentioned = new ArrayList<EntityPlayerMP>();
+		List<EntityPlayerMP> mentioned = Lists.newArrayList();
 		
 		for(Object obj : MinecraftServer.getServer().getConfigurationManager().playerEntityList)
 		{
@@ -211,7 +211,7 @@ public class CommonHandler extends ChatHandlerImpl
 					mentioned.clear();
 				}			
 			}
-			VChat.channelHandler.privateMessageOnChannel(channel, entity, receiver, new ChatComponentTranslation("chat.type.text", componentName, computed2));
+			ChannelHandler.privateMessageOnChannel(channel, entity, receiver, new ChatComponentTranslation("chat.type.text", componentName, computed2));
 		}
 		
 		if(!channel.getName().equals("local") && !(channel instanceof ChannelCustom && ((ChannelCustom)channel).hasRange()))
@@ -363,7 +363,7 @@ public class CommonHandler extends ChatHandlerImpl
 		}
 		
 		@Override
-		public List getCommandAliases() 
+		public List<String> getCommandAliases() 
 		{
 			return Arrays.asList("pos");
 		}
@@ -390,7 +390,7 @@ public class CommonHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+		public List<?> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
 		{
 			return getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
 		}

@@ -1,8 +1,8 @@
 package vic.mod.chat.handler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandMessage;
@@ -24,6 +24,8 @@ import vic.mod.chat.Config;
 import vic.mod.chat.Misc;
 import vic.mod.chat.Misc.CommandOverrideAccess;
 import vic.mod.chat.VChat;
+
+import com.google.common.collect.Lists;
 
 public class AFKHandler extends ChatHandlerImpl
 {
@@ -154,7 +156,7 @@ public class AFKHandler extends ChatHandlerImpl
 	
 	private static class AFKEntry
 	{
-		public ArrayList<ChatEntity> messaged = new ArrayList<ChatEntity>();
+		public List<ChatEntity> messaged = Lists.newArrayList();
 		public String reason = "";
 		
 		public AFKEntry(String reason)

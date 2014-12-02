@@ -38,6 +38,7 @@ import vic.mod.chat.VChat;
 import vic.mod.chat.api.IChannel;
 import vic.mod.chat.api.bot.IChatEntity;
 
+import com.google.common.collect.Lists;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
@@ -49,7 +50,7 @@ import com.google.gson.stream.JsonReader;
 
 public class ChannelHandler extends ChatHandlerImpl
 {
-	public static HashMap<ChatEntity, ArrayList<String>> members = new HashMap<ChatEntity, ArrayList<String>>();
+	public static HashMap<ChatEntity, List<String>> members = new HashMap<ChatEntity, List<String>>();
 	public static HashMap<String, IChannel> channels = new HashMap<String, IChannel>();
 	
 	private File channelfile;
@@ -94,7 +95,7 @@ public class ChannelHandler extends ChatHandlerImpl
 	{
 		ChatEntity player = new ChatEntity(event.player);
 		if(members.get(player) == null) return;
-		for(String channel : (List<String>)members.get(player).clone())
+		for(String channel : Lists.newArrayList(members.get(player)))
 		{
 			getChannel(channel).onLeave(player, true);
 		}
@@ -270,14 +271,14 @@ public class ChannelHandler extends ChatHandlerImpl
 	
 	public static IChannel getActiveChannel(IChatEntity player)
 	{
-		ArrayList<String> joined = members.get(player);
+		List<String> joined = members.get(player);
 		if(joined == null || joined.size() == 0) return null;
 		return channels.get(joined.get(joined.size() - 1));
 	}
 	
-	public static ArrayList<IChannel> getJoinedChannels(IChatEntity player)
+	public static List<IChannel> getJoinedChannels(IChatEntity player)
 	{
-		ArrayList<IChannel> list = new ArrayList<IChannel>();
+		List<IChannel> list = Lists.newArrayList();
 		for(String s : members.get(player)) list.add(channels.get(s));
 		return list;
 	}
@@ -346,7 +347,7 @@ public class ChannelHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public List getCommandAliases() 
+		public List<String> getCommandAliases() 
 		{
 			return Arrays.asList("l"); 
 		}
@@ -380,7 +381,7 @@ public class ChannelHandler extends ChatHandlerImpl
 		}
 		
 		@Override
-		public List getCommandAliases() 
+		public List<String> getCommandAliases() 
 		{
 			return Arrays.asList("g"); 
 		}
@@ -421,7 +422,7 @@ public class ChannelHandler extends ChatHandlerImpl
 		}
 
 		@Override
-		public List getCommandAliases() 
+		public List<String> getCommandAliases() 
 		{
 			return Arrays.asList(new String[]{"ch"});
 		}
@@ -599,6 +600,8 @@ public class ChannelHandler extends ChatHandlerImpl
 	
 	public static class ChannelNotFoundException extends CommandException
 	{
+		private static final long serialVersionUID = -7466750365753628373L;
+
 		public ChannelNotFoundException(String channel) 
 		{
 			super("The specified channel \"" + channel + "\" does not exist!");
@@ -607,6 +610,8 @@ public class ChannelHandler extends ChatHandlerImpl
 	
 	public static class ChannelNotJoinedException extends CommandException
 	{
+		private static final long serialVersionUID = 3396890104902473546L;
+
 		public ChannelNotJoinedException() 
 		{
 			super("You haven't joined any channel.");
